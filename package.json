@@ -1,0 +1,22 @@
+{
+    "name": "paint-js",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/ProfAndreaPollini/js-paint.git",
+    "author": "ProfAndreaPollini <prof.andrea.pollini@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "dev": "webpack-dev-server --open"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.4.4",
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
+        "babel-loader": "^8.0.6",
+        "common-config-webpack-plugin": "^1.3.4",
+        "html-webpack-plugin": "^3.2.0",
+        "webpack": "^4.34.0",
+        "webpack-cli": "^3.3.4",
+        "webpack-dev-server": "^3.7.1"
+    }
+}
