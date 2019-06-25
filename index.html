@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="paint.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <script src="./color-scheme.min.js"></script>
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+    <div>
+        <div id="currentColor">&nbsp;</div>
+
+    </div>
+    <div id="colorPalette">
+    </div>
+    <input id="colorHue" type="range" min="0" max="359" step="1" value="21">
+    <select id="colorSchemaSelect">
+        <option value="contrast">contrast</option>
+        <option value="triade">triade</option>
+    </select>
+    <select id="colorSchemaVariationSelect">
+        <option value="default">default</option>
+        <option value="pastel">pastel</option>
+        <option value="soft">soft</option>
+        <option value="hard">hard</option>
+    </select>
+    <script src="paint2.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+#colorPalette div {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    flex-direction: row;
+}
+
+#currentColor {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    flex-direction: row;
+}
