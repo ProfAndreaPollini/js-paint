@@ -1,5 +1,6 @@
 import {
-    Stroke
+    Stroke,
+    Eraser
 } from "./stroke.js"
 
 const canvas = document.getElementById("canvas")
@@ -10,8 +11,26 @@ const currentColor = document.getElementById("currentColor")
 const colorHue = document.getElementById("colorHue")
 const colorSchemaSelect = document.getElementById("colorSchemaSelect")
 const colorSchemaVariationSelect = document.getElementById("colorSchemaVariationSelect")
+const strokeSize = document.getElementById("strokeSize")
+const strokeSizeDiv = document.getElementById("strokeSizeDiv")
+const btnUndo = document.getElementById("btnUndo")
 
+const eraserTool = document.getElementById("eraserTool")
+const pencilTool = document.getElementById("pencilTool")
 
+let currentTool = "eraser"
+
+eraserTool.onclick = () => {
+    currentTool = "eraser"
+}
+
+pencilTool.onclick = () => {
+    currentTool = "pencil"
+}
+
+strokeSize.oninput = (e) => {
+    strokeSizeDiv.textContent = strokeSize.value
+}
 
 const W = 400
 const H = 400
@@ -19,6 +38,11 @@ const H = 400
 canvas.width = W
 canvas.height = H
 
+const clearCanvas = () => {
+    ctx.clearRect(0, 0, W, H)
+        //ctx.fillRect(0, 0, W, H)
+}
+clearCanvas()
 
 
 let strokes = []
@@ -61,6 +85,16 @@ colorSchemaVariationSelect.onchange = (e) => {
     makeColors(colorHue.value, colorSchemaSelect.value, colorSchemaVariationSelect.value)
 }
 
+const undo = () => {
+    strokes.pop()
+}
+
+btnUndo.onclick = (e) => {
+    console.log("UNDO")
+
+    undo()
+
+}
 
 
 let selectedColor = colors[0]
@@ -68,11 +102,7 @@ currentColor.style.backgroundColor = selectedColor
 
 
 
-const clearCanvas = () => {
-    ctx.clearRect(0, 0, W, H)
-        //ctx.fillRect(0, 0, W, H)
-}
-clearCanvas()
+
 
 let dragOk = false
     //let stroke = new Stroke()
@@ -83,15 +113,12 @@ const OnMouseMove = (e) => {
     if (!dragOk) return
     let x = e.pageX - canvas.offsetLeft;
     let y = e.pageY - canvas.offsetTop;
-    console.log(x, y)
+    //console.log(x, y)
     strokes[strokes.length - 1].push({
-        x,
-        y
-    })
-    strokes[strokes.length - 1].draw({
-        selectedColor,
-        ctx
-    })
+            x,
+            y
+        })
+        //strokes[strokes.length - 1].draw()
 }
 
 canvas.onmousedown = (e) => {
@@ -99,8 +126,18 @@ canvas.onmousedown = (e) => {
     canvas.onmousemove = OnMouseMove
     let x = e.pageX - canvas.offsetLeft;
     let y = e.pageY - canvas.offsetTop;
-    console.log(x, y)
-    strokes.push(new Stroke())
+
+    const tool = (currentTool === "eraser") ? new Eraser({
+        ctx,
+        size: strokeSize.value
+    }) : new Stroke({
+        selectedColor,
+        ctx,
+        strokeSize: strokeSize.value
+    })
+
+    console.log(tool)
+    strokes.push(tool)
     strokes[strokes.length - 1].push({
         x,
         y
@@ -110,8 +147,37 @@ canvas.onmousedown = (e) => {
 canvas.onmouseup = () => {
     dragOk = false
     canvas.onmousemove = null
-    strokes[strokes.length - 1].draw({
-        selectedColor,
-        ctx
-    })
+        //strokes[strokes.length - 1].draw()
 }
+
+let canvasScale = 1.0
+
+let cumDeltaY = 0.0
+
+canvas.onwheel = (e) => {
+    console.log(e.wheelDelta, e.wheelDelta > 0, canvasScale)
+    cumDeltaY += e.deltaY
+
+
+    if (e.wheelDelta > 0) {
+        if (canvasScale < 1.0) canvasScale = 1.0
+        else
+            canvasScale *= 1.01
+    } else {
+        if (canvasScale > 1.0) canvasScale = 0.99
+        else
+            canvasScale *= 0.99
+    }
+    //lastDeltaY = e.deltaY
+    //console.log(cumDeltaY);
+    ctx.scale(canvasScale, canvasScale);
+
+}
+
+function paint() {
+    clearCanvas()
+
+    strokes.forEach(stroke => stroke.draw())
+    requestAnimationFrame(paint)
+}
+paint()
