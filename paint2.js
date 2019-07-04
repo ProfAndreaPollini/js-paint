@@ -18,7 +18,7 @@ const btnUndo = document.getElementById("btnUndo")
 const eraserTool = document.getElementById("eraserTool")
 const pencilTool = document.getElementById("pencilTool")
 
-let currentTool = "eraser"
+let currentTool = "pencil"
 
 eraserTool.onclick = () => {
     currentTool = "eraser"
@@ -173,6 +173,16 @@ canvas.onwheel = (e) => {
     ctx.scale(canvasScale, canvasScale);
 
 }
+
+
+const download = () => {
+    document.getElementById("downloader").download = "image.png";
+    document.getElementById("downloader").href = canvas.toDataURL("image/png")
+        //const img = canvas.toDataURL("image/png")
+        //document.write('<img src="' + img + '"/>');
+}
+document.getElementById("downloader").onclick = download
+
 
 function paint() {
     clearCanvas()
